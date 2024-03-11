@@ -76,7 +76,6 @@ export const DashboardScreen: FC<DashboardScreenProps> = observer(function Dashb
     api.getMovieList(page).then((data) => {
       if (data.kind === "ok") {
         setMovieResponse((prevMovies) => [...prevMovies, ...data.movies])
-        console.log(movieResponse)
         setPage(page + 1)
       } else {
         errorAlert()

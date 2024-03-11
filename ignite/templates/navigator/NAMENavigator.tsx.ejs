@@ -19,7 +19,7 @@ const Stack = createNativeStackNavigator<<%= props.pascalCaseName %>NavigatorPar
 export const <%= props.pascalCaseName %>Navigator = () => {
   return (
     <Stack.Navigator screenOptions={{ cardStyle: { backgroundColor: "transparent" }, headerShown: false, }}>
-      <Stack.Screen name="Demo" component={WelcomeScreen} />
+      <Stack.Screen name="Demo" component={DashboardScreen} />
     </Stack.Navigator>
   )
 }

@@ -65,19 +65,6 @@ const AppStack = observer(function AppStack() {
       screenOptions={{ headerShown: false, navigationBarColor: colors.background }}
       initialRouteName={"Dashboard"}
     >
-      {/* {isAuthenticated ? (
-        <>
-          <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
-
-          <Stack.Screen name="Demo" component={DemoNavigator} />
-        </>
-      ) : (
-        <>
-          <Stack.Screen name="Login" component={Screens.LoginScreen} />
-        </>
-      )} */}
-
-      {/** 🔥 Your screens go here */}
       <Stack.Screen name="Dashboard" component={Screens.DashboardScreen} />
       <Stack.Screen
         name="MovieDetail"
