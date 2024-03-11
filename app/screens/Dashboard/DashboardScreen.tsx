@@ -1,21 +1,19 @@
+/* eslint-disable react-native/no-color-literals */
+/* eslint-disable react-native/sort-styles */
 /* eslint-disable react-native/no-inline-styles */
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import {
   View,
-  Image,
-  Text,
   TouchableOpacity,
   ActivityIndicator,
-  ViewStyle,
-  ImageStyle,
-  TextStyle,
+  StyleSheet,
   VirtualizedList,
   RefreshControl,
-  StyleProp,
+  Alert,
 } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
-import { Icon, Screen, TextField } from "app/components"
+import { Icon, Screen, TextField, Text } from "app/components"
 import { api } from "app/services/api"
 import { movieList } from "app/services/api/movieDashboard/movieDashboard.type"
 import Config from "../../config"
@@ -34,16 +32,25 @@ export const DashboardScreen: FC<DashboardScreenProps> = observer(function Dashb
   const [isFetchingMore, setIsFetchingMore] = useState<boolean>(false)
   const [refreshing, setRefreshing] = useState(false)
   const [searchField, setSearchField] = useState("")
+  const [noMovies, setNoMovies] = useState(false)
 
   useEffect(() => {
     if (searchField !== "") {
       setMovieResponse([])
       api.getSearchMovieList(searchField).then((data) => {
         if (data.kind === "ok") {
-          setMovieResponse(data.movies)
+          if (data.movies.length > 0) {
+            setNoMovies(false)
+            setMovieResponse(data.movies)
+          } else {
+            setNoMovies(true)
+          }
+        } else {
+          errorAlert()
         }
       })
     } else {
+      setNoMovies(false)
       onRefresh()
     }
   }, [searchField])
@@ -65,14 +72,25 @@ export const DashboardScreen: FC<DashboardScreenProps> = observer(function Dashb
     if (isFetchingMore) return
 
     setIsFetchingMore(true)
+
     api.getMovieList(page).then((data) => {
       if (data.kind === "ok") {
         setMovieResponse((prevMovies) => [...prevMovies, ...data.movies])
         console.log(movieResponse)
         setPage(page + 1)
+      } else {
+        errorAlert()
       }
       setIsFetchingMore(false)
     })
+  }
+
+  const errorAlert = () => {
+    Alert.alert(
+      "Error",
+      "Sorry, there is a problem calling the API. Please try refreshing the page.",
+      [{ text: "OK" }],
+    )
   }
 
   const renderItem = ({ item }: { item: movieList }) => (
@@ -125,13 +143,8 @@ export const DashboardScreen: FC<DashboardScreenProps> = observer(function Dashb
     )
   }
 
-  return (
-    <Screen
-      preset="fixed"
-      safeAreaEdges={["top", "bottom"]}
-      contentContainerStyle={{ flex: 1, flexDirection: "column" }}
-    >
-      {headerView()}
+  const renderVirtualizedList = () => {
+    return (
       <VirtualizedList
         data={movieResponse}
         renderItem={renderItem}
@@ -143,18 +156,45 @@ export const DashboardScreen: FC<DashboardScreenProps> = observer(function Dashb
         keyExtractor={(_, index) => String(index)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
+    )
+  }
+
+  return (
+    <Screen
+      preset="fixed"
+      safeAreaEdges={["top", "bottom"]}
+      contentContainerStyle={{ flex: 1, flexDirection: "column" }}
+    >
+      <>
+        {headerView()}
+        {!noMovies ? (
+          movieResponse.length > 0 ? (
+            renderVirtualizedList()
+          ) : (
+            <View style={{ flex: 1, justifyContent: "center" }}>
+              <ActivityIndicator style={{ alignItems: "center" }} size="large" />
+            </View>
+          )
+        ) : (
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <Text style={{ textAlign: "center" }} preset="subheading">
+              Sorry, we could not find the movie that you're searching for
+            </Text>
+          </View>
+        )}
+      </>
     </Screen>
   )
 })
 
-const styles = {
+const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: "row",
     alignItems: "center",
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#ddd",
-  } as ViewStyle,
+  },
   posterImage: {
     width: 100,
     height: 150,
@@ -162,17 +202,17 @@ const styles = {
   },
   textContainer: {
     flex: 1,
-  } as ViewStyle,
+  },
   title: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 5,
-  } as TextStyle,
+  },
   releaseDate: {
     fontSize: 16,
     color: "#888",
-  } as TextStyle,
+  },
   footer: {
     marginTop: 10,
-  } as ViewStyle,
-}
+  },
+})
