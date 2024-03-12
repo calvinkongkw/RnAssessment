@@ -12,12 +12,12 @@ import {
   RefreshControl,
   Alert,
 } from "react-native"
-import { AppStackScreenProps } from "app/navigators"
-import { Icon, Screen, TextField, Text } from "app/components"
-import { api } from "app/services/api"
-import { movieList } from "app/services/api/movieDashboard/movieDashboard.type"
+import { AppStackScreenProps } from "../../navigators"
+import { Icon, Screen, TextField, Text } from "../../components"
+import { api } from "../../services/api"
+import { movieList } from "../../services/api/movieDashboard/movieDashboard.type"
 import Config from "../../config"
-import { spacing } from "app/theme"
+import { spacing } from "../..//theme"
 import FastImage from "react-native-fast-image"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"

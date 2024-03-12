@@ -4,12 +4,12 @@
 import React, { FC } from "react"
 import { observer } from "mobx-react-lite"
 import { StyleSheet, View } from "react-native"
-import { AppStackScreenProps } from "app/navigators"
-import { Screen, Text } from "app/components"
-import { movieList } from "app/services/api/movieDashboard/movieDashboard.type"
+import { AppStackScreenProps } from "../../navigators"
+import { Screen, Text } from "../../components"
+import { movieList } from "../../services/api/movieDashboard/movieDashboard.type"
 import FastImage from "react-native-fast-image"
-import Config from "app/config"
-import { spacing } from "app/theme"
+import Config from "../../config"
+import { spacing } from "../../theme"
 
 interface MovieDetailScreenProps extends AppStackScreenProps<"MovieDetail"> {}
 
