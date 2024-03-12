@@ -15,6 +15,7 @@ import { movieList, movieResponse } from "./movieDashboard/movieDashboard.type"
 export const DEFAULT_API_CONFIG: ApiConfig = {
   url: Config.API_URL,
   timeout: 10000,
+  token: Config.TOKEN
 }
 
 export class Api {
@@ -28,8 +29,7 @@ export class Api {
       timeout: this.config.timeout,
       headers: {
         accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiODRkMzkzYWNmYTZhMWRhNGRjOTNhOTI3YjgxZjc4ZiIsInN1YiI6IjY1ZWU2MmQxYjMzMTZiMDE4NjIwNDU2NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.znpdraIkZuQY6FXKwNJMjJr4xxbsP-C7nr5oEelguFs",
+        Authorization: this.config.token,
       },
     })
   }

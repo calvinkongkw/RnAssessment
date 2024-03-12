@@ -5,10 +5,10 @@ In vscode terminal run:
 yarn install
 yarn ios / yarn android
 
-![](demo/demo1.png =100x300)
-![](demo/demo2.png =100x300)
-![](demo/demo3.png =100x300)
-![](demo/demo4.png =100x300)
-![](demo/demo5.png =100x300)
-![](demo/demo6.png =100x300)
-![](demo/demo7.png =100x300)
+<img src="demo/demo1.png" width="200" height="350">
+<img src="demo/demo2.png" width="200" height="350">
+<img src="demo/demo3.png" width="200" height="350">
+<img src="demo/demo4.png" width="200" height="350">
+<img src="demo/demo5.png" width="200" height="350">
+<img src="demo/demo6.png" width="200" height="350">
+<img src="demo/demo7.png" width="200" height="350">

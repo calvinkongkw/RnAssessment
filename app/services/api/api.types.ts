@@ -12,4 +12,6 @@ export interface ApiConfig {
    * Milliseconds before we timeout the request.
    */
   timeout: number
+
+  token: string
 }
