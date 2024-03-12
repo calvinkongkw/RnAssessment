@@ -57,12 +57,12 @@ export class Api {
 
   async getSearchMovieList(
     query: string,
-  ): Promise<{ kind: string; movies: any[] } | GeneralApiProblem> {
+  ): Promise<{ kind: string; movies: movieList[] } | GeneralApiProblem> {
     const url = `search/movie?query=${query}&include_adult=false&language=en-US&page=1`
     return this.fetchMovies(url)
   }
 
-  async getMovieList(page: number): Promise<{ kind: string; movies: any[] } | GeneralApiProblem> {
+  async getMovieList(page: number): Promise<{ kind: string; movies: movieList[] } | GeneralApiProblem> {
     const url = `discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`
     return this.fetchMovies(url)
   }

@@ -33,20 +33,20 @@ export const DashboardScreen: FC<DashboardScreenProps> = observer(function Dashb
   const [refreshing, setRefreshing] = useState(false)
   const [searchField, setSearchField] = useState("")
   const [noMovies, setNoMovies] = useState(false)
+  const [badResponse, setBadResponse] = useState(false)
 
   useEffect(() => {
     if (searchField !== "") {
       setMovieResponse([])
       api.getSearchMovieList(searchField).then((data) => {
         if (data.kind === "ok") {
+          setBadResponse(false)
           if (data.movies.length > 0) {
             setNoMovies(false)
             setMovieResponse(data.movies)
           } else {
             setNoMovies(true)
           }
-        } else {
-          errorAlert()
         }
       })
     } else {
@@ -58,6 +58,12 @@ export const DashboardScreen: FC<DashboardScreenProps> = observer(function Dashb
   useEffect(() => {
     fetchMovies()
   }, [page])
+
+  useEffect(() => {
+    if (refreshing === true) {
+      fetchMovies()
+    }
+  }, [refreshing])
 
   const onRefresh = () => {
     setRefreshing(true)
@@ -75,10 +81,12 @@ export const DashboardScreen: FC<DashboardScreenProps> = observer(function Dashb
 
     api.getMovieList(page).then((data) => {
       if (data.kind === "ok") {
+        setBadResponse(false)
         setMovieResponse((prevMovies) => [...prevMovies, ...data.movies])
-        setPage(page + 1)
       } else {
+        setBadResponse(true)
         errorAlert()
+        setMovieResponse([])
       }
       setIsFetchingMore(false)
     })
@@ -168,6 +176,8 @@ export const DashboardScreen: FC<DashboardScreenProps> = observer(function Dashb
         {headerView()}
         {!noMovies ? (
           movieResponse.length > 0 ? (
+            renderVirtualizedList()
+          ) : badResponse ? (
             renderVirtualizedList()
           ) : (
             <View style={{ flex: 1, justifyContent: "center" }}>
